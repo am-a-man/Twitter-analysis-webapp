@@ -46,3 +46,23 @@ app.get('/api/twitter/sentiment_analysis/v1/init', (req, res, next) => {
     }
 })
 
+
+app.get('/api/twitter/sentiment_analysis/v2/init/:keyword', (req, res, next) => {
+    console.log("[root]: received GET request at /api/twitter/sentiment_analysis/v1/init");
+    var keyword = req.params.keyword;
+    console.log(keyword)
+    async function work() {
+        var tweets = await getTweets(keyword);
+        var sentimentData = processTwitterData(tweets, model, metadata);
+        res.send({
+            data: sentimentData
+        })
+    }
+    try {
+    work()
+    }
+    catch(err) {
+        console.log(err);
+    }
+})
+
